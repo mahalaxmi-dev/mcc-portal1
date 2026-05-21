@@ -1,0 +1,648 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - MCC Grievance Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f9fc;
+            padding: 30px;
+            color: #333;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #1a3c5e;
+            color: white;
+        }
+        .btn-secondary {
+            background: #e9eef5;
+            color: #1a3c5e;
+        }
+        .filter-bar {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        #search-box, #status-filter {
+            padding: 7px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #search-box {
+            width: 220px;
+        }
+        .no-results {
+            color: red;
+            display: none;
+        }
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .badge-pending {
+            background-color: #ffe0e0;
+            color: #c0392b;
+        }
+        .badge-inprogress {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .badge-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #1a3c5e;
+            color: white;
+        }
+        a {
+            color: #1a3c5e;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div>
+        <h2>Welcome, {{ citizen.name }}</h2>
+
+        {% if complaints %}
+            <p>Your complaints are listed below.</p>
+        {% endif %}
+
+    </div>
+
+    <div>
+        <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+    </div>
+</div>
+
+{% if complaints %}
+<div class="filter-bar">
+    <input type="text" id="search-box" placeholder="Search by title...">
+    <select id="status-filter">
+        <option value="all">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+    </select>
+</div>
+
+<table id="complaints-table">
+    <tr>
+        <th>Complaint ID</th>
+        <th>Department</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Date Submitted</th>
+        <th>Last Updated</th>
+    </tr>
+    {% for complaint in complaints %}
+    <tr class="complaint-row" data-status="{{ complaint.status }}" data-title="{{ complaint.title|lower }}">
+        <td>
+            <a href="{% url 'complaint_detail' complaint.complaint_id %}">{{ complaint.complaint_id }}</a>
+        </td>
+        <td>{{ complaint.department }}</td>
+        <td>{{ complaint.title }}</td>
+        <td>
+            {% if complaint.status == 'Pending' %}
+                <span class="badge badge-pending">Pending</span>
+            {% elif complaint.status == 'In Progress' %}
+                <span class="badge badge-inprogress">In Progress</span>
+            {% elif complaint.status == 'Resolved' %}
+                <span class="badge badge-resolved">Resolved</span>
+            {% endif %}
+        </td>
+        <td>{{ complaint.date_submitted|date:"d M Y" }}</td>
+        <td>{{ complaint.last_updated|date:"d M Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p class="no-results" id="no-results">No complaints found.</p>
+
+{% else %}
+<p>You have not filed any complaints yet.</p>
+<a href="{% url 'terms' %}" class="btn btn-primary">File a Complaint</a>
+{% endif %}
+
+<br><br>
+
+<a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+
+{% if complaints %}
+    <a href="{% url 'terms' %}" class="btn btn-primary">File New Complaint</a>
+{% endif %}
+
+<script>
+    function filterTable() {
+        var search = document.getElementById('search-box').value.toLowerCase();
+        var status = document.getElementById('status-filter').value;
+        var rows = document.querySelectorAll('.complaint-row');
+        var anyVisible = false;
+
+        rows.forEach(function(row) {
+            var title = row.getAttribute('data-title');
+            var rowStatus = row.getAttribute('data-status');
+            var matchSearch = title.includes(search);
+            var matchStatus = status === 'all' || rowStatus === status;
+
+            if (matchSearch && matchStatus) {
+                row.style.display = '';
+                anyVisible = true;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+    }
+
+    document.getElementById('search-box').addEventListener('input', filterTable);
+    document.getElementById('status-filter').addEventListener('change', filterTable);
+</script>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - MCC Grievance Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #163a6b;
+            --navy-dark: #122f5a;
+            --sky: #5f97e6;
+            --sky-soft: #dce9fb;
+            --white: #ffffff;
+            --text: #1f3250;
+            --text-soft: #52617a;
+            --border: rgba(28, 56, 108, 0.12);
+            --shadow: 0 18px 45px rgba(21, 56, 102, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, #f5f8ff 0%, #ffffff 45%, #f8fbff 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+        /* ── Navbar ── */
+        .navbar {
+            background: rgba(24, 50, 92, 0.96);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 20px 45px rgba(15, 38, 71, 0.12);
+        }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .navbar .logo { color: #f8fbff; font-size: 22px; font-weight: 700; text-decoration: none; }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 22px; }
+        .nav-links a { color: #d7e4ff; font-size: 14px; font-weight: 600; transition: color 0.25s; }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a.active { color: #fff; border-bottom: 2px solid var(--sky); padding-bottom: 2px; }
+
+        /* ── Page hero strip ── */
+        .page-hero {
+            background: linear-gradient(135deg, var(--navy) 0%, #2a5a9f 100%);
+            color: white;
+            padding: 44px 0 36px;
+        }
+        .page-hero .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .page-hero-text h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 4px; }
+        .page-hero-text p  { color: rgba(255,255,255,0.78); font-size: 0.97rem; }
+        .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 11px 22px; border-radius: 10px; font-size: 0.92rem;
+            font-weight: 600; font-family: inherit; cursor: pointer;
+            border: none; transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-white {
+            background: #fff; color: var(--navy-dark);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+        .btn-white:hover { box-shadow: 0 10px 24px rgba(0,0,0,0.18); }
+        .btn-ghost {
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #f0f6ff;
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,0.22); }
+        .btn-navy {
+            background: var(--navy); color: #fff;
+            box-shadow: 0 6px 18px rgba(22,58,107,0.22);
+        }
+        .btn-navy:hover { opacity: 0.9; }
+        .btn-sm { padding: 8px 16px; font-size: 0.86rem; border-radius: 8px; }
+
+        /* ── Stats strip ── */
+        .stats-strip { background: #fff; border-bottom: 1px solid var(--border); }
+        .stats-strip .container {
+            display: flex; gap: 0; flex-wrap: wrap;
+        }
+        .stat-item {
+            flex: 1; min-width: 120px;
+            padding: 20px 28px;
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-num { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1; }
+        .stat-label { font-size: 0.82rem; color: var(--text-soft); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+        .stat-pending .stat-num  { color: #c0392b; }
+        .stat-progress .stat-num { color: #856404; }
+        .stat-resolved .stat-num { color: #155724; }
+
+        /* ── Main content ── */
+        .page-body { padding: 40px 0 80px; }
+
+        /* ── Filter bar ── */
+        .filter-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+        }
+        .filter-card label { font-size: 0.88rem; font-weight: 600; color: var(--text-soft); }
+        .filter-input {
+            padding: 9px 14px; font-size: 0.93rem; font-family: inherit;
+            border: 1.5px solid rgba(30,60,113,0.18); border-radius: 9px;
+            color: var(--text); background: #f8fafd; outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .filter-input:focus { border-color: var(--sky); box-shadow: 0 0 0 3px rgba(95,151,230,0.14); }
+        #search-box { width: 240px; }
+        .filter-spacer { flex: 1; }
+
+        /* ── Table card ── */
+        .table-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .table-card-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+        }
+        .table-card-header h2 { font-size: 1.1rem; color: var(--navy); font-weight: 700; }
+        .table-card-header span { font-size: 0.88rem; color: var(--text-soft); }
+
+        table { width: 100%; border-collapse: collapse; }
+        thead tr { background: linear-gradient(135deg, var(--navy), #1e4d8c); }
+        th {
+            padding: 13px 16px; text-align: left;
+            font-size: 0.82rem; font-weight: 600;
+            color: rgba(255,255,255,0.9); letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        td { padding: 14px 16px; font-size: 0.93rem; border-bottom: 1px solid #f0f4fb; vertical-align: middle; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #f5f9ff; }
+
+        .complaint-id-link {
+            color: var(--sky); font-weight: 600;
+            transition: color 0.2s;
+        }
+        .complaint-id-link:hover { color: var(--navy); text-decoration: underline; }
+
+        /* ── Badges ── */
+        .badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 11px; border-radius: 99px;
+            font-size: 0.8rem; font-weight: 700; white-space: nowrap;
+        }
+        .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+        .badge-pending  { background: #fff0f0; color: #c0392b; }
+        .badge-progress { background: #fff8e1; color: #856404; }
+        .badge-resolved { background: #eaf7ef; color: #155724; }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center; padding: 70px 24px;
+        }
+        .empty-state .empty-icon { font-size: 3.5rem; margin-bottom: 18px; }
+        .empty-state h3 { font-size: 1.25rem; color: var(--navy); margin-bottom: 10px; }
+        .empty-state p { color: var(--text-soft); margin-bottom: 24px; font-size: 0.95rem; }
+
+        /* ── No results row ── */
+        .no-results-row td { text-align: center; color: #c0392b; padding: 28px; font-weight: 600; display: none; }
+
+        /* ── Footer ── */
+        .footer { background: #0f2040; color: #d5dce9; padding: 80px 0 40px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-bottom: 36px; }
+        .footer-section h3 { font-size: 1.05rem; margin-bottom: 16px; color: #fff; }
+        .footer-section p, .footer-section li { font-size: 0.93rem; color: #c8d3e1; line-height: 1.8; }
+        .footer-section ul { list-style: none; padding: 0; margin: 0; }
+        .footer-section li { margin-bottom: 10px; }
+        .footer-section a { color: #c8d3e1; transition: color 0.2s; }
+        .footer-section a:hover { color: #fff; }
+        .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 22px; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+
+        @media (max-width: 700px) {
+            .page-hero .container { flex-direction: column; align-items: flex-start; }
+            #search-box { width: 100%; }
+            .stat-item { min-width: 50%; }
+            th, td { padding: 10px 10px; font-size: 0.83rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar">
+    <div class="container">
+        <a class="logo" href="{% url 'home' %}">🏛️ MCC Grievance Portal</a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'faqs' %}">FAQs</a>
+            <a href="{% url 'officers_directory' %}">Officers</a>
+            <a href="{% url 'track_complaint' %}">Track Complaint</a>
+            <a href="{% url 'dashboard' %}" class="active">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Page Hero ── -->
+<div class="page-hero">
+    <div class="container">
+        <div class="page-hero-text">
+            <h1>👋 Welcome, {{ citizen.name }}</h1>
+            <p>Manage and track all your civic complaints from one place.</p>
+        </div>
+        <div class="hero-actions">
+            {% if complaints %}
+            <a href="{% url 'terms' %}" class="btn btn-white">📝 File New Complaint</a>
+            {% endif %}
+            <a href="{% url 'logout' %}" class="btn btn-ghost">🚪 Logout</a>
+        </div>
+    </div>
+</div>
+
+<!-- ── Stats Strip ── -->
+{% if complaints %}
+<div class="stats-strip">
+    <div class="container">
+        <div class="stat-item">
+            <span class="stat-num">{{ complaints|length }}</span>
+            <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-item stat-pending">
+            <span class="stat-num" id="count-pending">0</span>
+            <span class="stat-label">Pending</span>
+        </div>
+        <div class="stat-item stat-progress">
+            <span class="stat-num" id="count-progress">0</span>
+            <span class="stat-label">In Progress</span>
+        </div>
+        <div class="stat-item stat-resolved">
+            <span class="stat-num" id="count-resolved">0</span>
+            <span class="stat-label">Resolved</span>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ── Main Body ── -->
+<div class="page-body">
+    <div class="container">
+
+        {% if complaints %}
+
+        <!-- Filter bar -->
+        <div class="filter-card">
+            <label>🔍</label>
+            <input type="text" id="search-box" class="filter-input" placeholder="Search by title or department…">
+            <label>Status</label>
+            <select id="status-filter" class="filter-input">
+                <option value="all">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+            <div class="filter-spacer"></div>
+            <span id="result-count" style="font-size:0.88rem;color:var(--text-soft);font-weight:600;"></span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <div class="table-card-header">
+                <h2>My Complaints</h2>
+                <span>Click a Complaint ID to view full details</span>
+            </div>
+            <table id="complaints-table">
+                <thead>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>Department</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Date Submitted</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr class="complaint-row"
+                        data-status="{{ complaint.status }}"
+                        data-title="{{ complaint.title|lower }}"
+                        data-dept="{{ complaint.department|lower }}">
+                        <td>
+                            <a href="{% url 'complaint_detail' complaint.complaint_id %}" class="complaint-id-link">
+                                {{ complaint.complaint_id }}
+                            </a>
+                        </td>
+                        <td>{{ complaint.department }}</td>
+                        <td>{{ complaint.title }}</td>
+                        <td>
+                            {% if complaint.status == 'Pending' %}
+                                <span class="badge badge-pending">Pending</span>
+                            {% elif complaint.status == 'In Progress' %}
+                                <span class="badge badge-progress">In Progress</span>
+                            {% elif complaint.status == 'Resolved' %}
+                                <span class="badge badge-resolved">Resolved</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ complaint.date_submitted|date:"d M Y" }}</td>
+                        <td>{{ complaint.last_updated|date:"d M Y, H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="no-results-row" id="no-results-row">
+                        <td colspan="6">No complaints match your search.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+
+        <!-- Empty state -->
+        <div class="table-card">
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <h3>No Complaints Filed Yet</h3>
+                <p>You haven't filed any complaints yet. Use the button below to report a civic issue.</p>
+                <a href="{% url 'terms' %}" class="btn btn-navy">📝 File a Complaint</a>
+            </div>
+        </div>
+
+        {% endif %}
+        
+        <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="{% url 'home' %}" class="btn btn-navy btn-sm">🏠 Home</a>
+            {% if complaints %}
+            <a href="{% url 'terms' %}" class="btn btn-navy btn-sm">📝 File New Complaint</a>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About MCC Portal</h3>
+                <p>Empowering citizens of Mangalore to report civic issues, track progress, and stay connected with municipal services through a simple and secure portal.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'track_complaint' %}">Track Complaint</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                    <li><a href="{% url 'officers_directory' %}">Officers Directory</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📍 Mangalore City Corporation</li>
+                    <li>📞 +91 824-2220301</li>
+                    <li>📧 support@mccportal.in</li>
+                    <li>🕒 Mon-Fri: 10:00 AM – 5:30 PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Mangalore City Corporation. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ── Count badges into stats strip ──
+    var rows = document.querySelectorAll('.complaint-row');
+    var pending = 0, progress = 0, resolved = 0;
+    rows.forEach(function(r) {
+        var s = r.getAttribute('data-status');
+        if (s === 'Pending')     pending++;
+        else if (s === 'In Progress') progress++;
+        else if (s === 'Resolved')    resolved++;
+    });
+    var ep = document.getElementById('count-pending');
+    var epr = document.getElementById('count-progress');
+    var er = document.getElementById('count-resolved');
+    if (ep)  ep.textContent  = pending;
+    if (epr) epr.textContent = progress;
+    if (er)  er.textContent  = resolved;
+
+    // ── Filter logic ──
+    var searchBox    = document.getElementById('search-box');
+    var statusFilter = document.getElementById('status-filter');
+    var noResultsRow = document.getElementById('no-results-row');
+    var resultCount  = document.getElementById('result-count');
+
+    function filterTable() {
+        var search = searchBox ? searchBox.value.toLowerCase() : '';
+        var status = statusFilter ? statusFilter.value : 'all';
+        var visible = 0;
+
+        rows.forEach(function(row) {
+            var title  = row.getAttribute('data-title') || '';
+            var dept   = row.getAttribute('data-dept')  || '';
+            var rStatus = row.getAttribute('data-status') || '';
+            var matchSearch = title.includes(search) || dept.includes(search);
+            var matchStatus = status === 'all' || rStatus === status;
+
+            if (matchSearch && matchStatus) {
+                row.style.display = '';
+                visible++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (noResultsRow) {
+            noResultsRow.querySelector('td').style.display = visible === 0 ? 'table-cell' : 'none';
+            noResultsRow.style.display = visible === 0 ? '' : 'none';
+        }
+        if (resultCount) {
+            resultCount.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+        }
+    }
+
+    if (searchBox)    searchBox.addEventListener('input', filterTable);
+    if (statusFilter) statusFilter.addEventListener('change', filterTable);
+
+    // Init count
+    if (resultCount) resultCount.textContent = rows.length + ' result' + (rows.length !== 1 ? 's' : '');
+</script>
+
+</body>
+</html>

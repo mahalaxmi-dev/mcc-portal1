@@ -1,0 +1,355 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Officer Login - MCC Grievance Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f4f8; }
+        .card-wrap { max-width: 420px; margin: 80px auto; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .card-header { background-color: #1a3c5e; color: white; border-radius: 12px 12px 0 0 !important; text-align: center; padding: 25px; }
+        .card-header h4 { margin: 0; font-size: 20px; }
+        .card-header p { margin: 5px 0 0 0; font-size: 13px; color: #cce4ff; }
+        .btn-primary { background-color: #1a3c5e; border-color: #1a3c5e; }
+        .btn-primary:hover { background-color: #14304d; }
+    </style>
+</head>
+<body>
+<div class="card-wrap">
+    <div class="card">
+        <div class="card-header">
+            <h4>👮 Department Officer Login</h4>
+            <p>MCC Grievance Portal — Officer Panel</p>
+        </div>
+        <div class="card-body p-4">
+            {% if error %}
+            <div class="alert alert-danger py-2">{{ error }}</div>
+            {% endif %}
+            <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label fw-bold">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter officer username" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a href="{% url 'home' %}" style="font-size:13px; color:#666;">← Back to Home</a>
+    </div>
+</div>
+</body>
+</html> -->  
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Officer Login - MCC Grievance Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:      #163a6b;
+            --navy-dark: #122f5a;
+            --sky:       #5f97e6;
+            --sky-soft:  #dce9fb;
+            --white:     #ffffff;
+            --text:      #1f3250;
+            --text-soft: #52617a;
+            --border:    rgba(28, 56, 108, 0.12);
+            --shadow:    0 32px 68px rgba(14, 31, 70, 0.11);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, #f5f8ff 0%, #ffffff 45%, #f8fbff 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        .container { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+        /* ── Navbar ── */
+        .navbar {
+            background: rgba(24, 50, 92, 0.96);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 20px 45px rgba(15, 38, 71, 0.12);
+        }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .navbar .logo { color: #f8fbff; font-size: 22px; font-weight: 700; }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 22px; }
+        .nav-links a { color: #d7e4ff; font-size: 14px; font-weight: 600; transition: color 0.25s; }
+        .nav-links a:hover { color: #fff; }
+
+        /* ── Page shell ── */
+        .page-shell {
+            padding: 64px 24px 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-wrap { width: 100%; max-width: 460px; }
+
+        /* ── Card ── */
+        .hero-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+            color: white;
+            text-align: center;
+            padding: 36px 28px;
+        }
+        .card-header .badge-pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.9);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 99px;
+            margin-bottom: 14px;
+        }
+        .card-header h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+        .card-header p {
+            color: rgba(255,255,255,0.72);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .card-body { padding: 32px 32px 36px; }
+
+        /* ── Alert ── */
+        .alert-danger {
+            background: #fff0f0; border: 1px solid #f5c2c7; color: #842029;
+            border-radius: 12px; padding: 13px 16px; font-size: 0.9rem;
+            margin-bottom: 20px; display: flex; gap: 8px; align-items: center;
+        }
+
+        /* ── Fields ── */
+        .field { margin-bottom: 20px; }
+        .field label {
+            display: block; font-weight: 600; font-size: 0.9rem;
+            color: var(--text); margin-bottom: 8px;
+        }
+        .field input {
+            width: 100%;
+            border: 1.5px solid rgba(30, 60, 113, 0.2);
+            border-radius: 12px;
+            padding: 13px 16px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .field input:focus {
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(95,151,230,0.15);
+        }
+        .field input::placeholder { color: #9aabc2; }
+
+        /* password toggle */
+        .pw-wrapper { position: relative; }
+        .pw-wrapper input { padding-right: 48px; }
+        .toggle-pw {
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            color: var(--text-soft); font-size: 1.05rem; padding: 0; line-height: 1;
+        }
+        .toggle-pw:hover { color: var(--navy); }
+
+        /* ── Submit ── */
+        .btn-submit {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+            color: white; border: none; border-radius: 14px;
+            font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700;
+            cursor: pointer; margin-top: 6px;
+            transition: opacity 0.2s, transform 0.15s;
+            box-shadow: 0 10px 24px rgba(22, 58, 107, 0.22);
+        }
+        .btn-submit:hover  { opacity: 0.92; transform: translateY(-1px); }
+        .btn-submit:active { transform: scale(0.98); }
+
+        /* ── Info box ── */
+        .info-box {
+            background: var(--sky-soft);
+            border: 1px solid rgba(95,151,230,0.25);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.83rem;
+            color: var(--navy);
+            line-height: 1.55;
+            margin-top: 20px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        /* ── Back link ── */
+        .back-link-wrapper { text-align: center; margin-top: 24px; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 11px 24px;
+            background: linear-gradient(135deg, var(--sky), #3d7bc5);
+            color: white; border-radius: 12px;
+            font-weight: 600; font-size: 0.92rem;
+            box-shadow: 0 10px 26px rgba(74,144,226,0.22);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .back-link:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(74,144,226,0.32); color: white; }
+
+        /* ── Footer ── */
+        .footer { background: #0f2040; color: #d5dce9; padding: 80px 0 40px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-bottom: 36px; }
+        .footer-section h3 { font-size: 1.05rem; margin-bottom: 16px; color: #fff; }
+        .footer-section p, .footer-section li { font-size: 0.93rem; color: #c8d3e1; line-height: 1.8; }
+        .footer-section ul { list-style: none; padding: 0; margin: 0; }
+        .footer-section li { margin-bottom: 10px; }
+        .footer-section a { color: #c8d3e1; transition: color 0.2s; }
+        .footer-section a:hover { color: #fff; }
+        .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 22px; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+
+        @media (max-width: 500px) { .card-body { padding: 24px 18px 28px; } }
+    </style>
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar">
+    <div class="container">
+        <a class="logo" href="{% url 'home' %}">🏛️ MCC Grievance Portal</a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'faqs' %}">FAQs</a>
+            <a href="{% url 'officers_directory' %}">Officers</a>
+            <a href="{% url 'track_complaint' %}">Track Complaint</a>
+            <a href="{% url 'login' %}">Citizen Login</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Card ── -->
+<div class="page-shell">
+    <div class="card-wrap">
+        <div class="hero-card">
+
+            <div class="card-header">
+                <div class="badge-pill">🔒 Officer Access Only</div>
+                <h4>👮 Department Officer Login</h4>
+                <p>MCC Grievance Portal — Officer Panel</p>
+            </div>
+
+            <div class="card-body">
+
+                {% if error %}
+                <div class="alert-danger">⚠️ {{ error }}</div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="field">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username"
+                               placeholder="Enter officer username" required autocomplete="username">
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <div class="pw-wrapper">
+                            <input type="password" id="password" name="password"
+                                   placeholder="Enter password" required autocomplete="current-password">
+                            <button type="button" class="toggle-pw" onclick="togglePw()" title="Show/hide">👁</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Login to Officer Panel →</button>
+                </form>
+
+                <div class="info-box">
+                    🔐 This panel is restricted to authorised Mangalore City Corporation officers. Unauthorised access is prohibited.
+                </div>
+
+            </div>
+        </div>
+
+        <div class="back-link-wrapper">
+            <a class="back-link" href="{% url 'home' %}">← Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About MCC Portal</h3>
+                <p>Empowering citizens of Mangalore to report civic issues, track progress, and stay connected with municipal services through a simple and secure portal.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Citizen Login</a></li>
+                    <li><a href="{% url 'track_complaint' %}">Track Complaint</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                    <li><a href="{% url 'officers_directory' %}">Officers Directory</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📍 Mangalore City Corporation</li>
+                    <li>📞 +91 824-2220301</li>
+                    <li>📧 support@mccportal.in</li>
+                    <li>🕒 Mon-Fri: 10:00 AM – 5:30 PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Mangalore City Corporation. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function togglePw() {
+        const pw = document.getElementById('password');
+        pw.type = pw.type === 'password' ? 'text' : 'password';
+    }
+</script>
+</body>
+</html>

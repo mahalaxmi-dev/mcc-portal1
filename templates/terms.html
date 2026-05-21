@@ -1,0 +1,323 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Terms & Agreement - MCC Grievance Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f4f8; }
+        .card-wrap { max-width: 600px; margin: 60px auto; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .card-header { background-color: #1a3c5e; color: white; border-radius: 12px 12px 0 0 !important; text-align: center; padding: 25px; }
+        .card-header h4 { margin: 0; font-size: 20px; }
+        .card-header p { margin: 5px 0 0 0; font-size: 13px; color: #cce4ff; }
+        .btn-primary { background-color: #1a3c5e; border-color: #1a3c5e; }
+        .btn-primary:hover { background-color: #14304d; }
+        .rule-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+        .rule-icon { font-size: 18px; flex-shrink: 0; }
+    </style>
+</head>
+<body>
+<div class="card-wrap">
+    <div class="card">
+        <div class="card-header">
+            <h4>📋 Before You File a Complaint</h4>
+            <p>Please read and agree to the following rules</p>
+        </div>
+        <div class="card-body p-4">
+            <div class="rule-item"><span class="rule-icon">📍</span><span>Complaint must be from <strong>Mangalore</strong> city only.</span></div>
+            <div class="rule-item"><span class="rule-icon">🏙️</span><span>Only civic issues are allowed — sanitation, roads, water, drainage, lights, parks.</span></div>
+            <div class="rule-item"><span class="rule-icon">🚫</span><span>Personal disputes and non-civic issues are not accepted.</span></div>
+            <div class="rule-item"><span class="rule-icon">⚠️</span><span>False complaints may be rejected by the department officer.</span></div>
+            <div class="rule-item"><span class="rule-icon">📎</span><span>A photo or document attachment is <strong>mandatory</strong> when filing a complaint.</span></div>
+            <div class="rule-item"><span class="rule-icon">🔒</span><span>Once submitted, complaints <strong>cannot</strong> be edited or deleted.</span></div>
+            <hr>
+            <form method="POST">
+            {% csrf_token %}
+            <div class="d-grid mb-2">
+                <button type="submit" class="btn btn-primary">✅ I Agree — Continue to File Complaint</button>
+            </div>
+            </form>
+            <div class="d-grid">
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terms & Agreement - MCC Grievance Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #163a6b;
+            --navy-dark: #122f5a;
+            --sky: #5f97e6;
+            --white: #ffffff;
+            --text: #1f3250;
+            --text-soft: #52617a;
+            --border: rgba(28, 56, 108, 0.12);
+            --shadow: 0 18px 45px rgba(21, 56, 102, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, #f5f8ff 0%, #ffffff 45%, #f8fbff 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+        /* ── Navbar ── */
+        .navbar {
+            background: rgba(24, 50, 92, 0.96);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 20px 45px rgba(15, 38, 71, 0.12);
+        }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .navbar .logo { color: #f8fbff; font-size: 22px; font-weight: 700; }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 22px; }
+        .nav-links a { color: #d7e4ff; font-size: 14px; font-weight: 600; transition: color 0.25s; }
+        .nav-links a:hover { color: #fff; }
+
+        /* ── Page shell ── */
+        .page-shell {
+            padding: 64px 24px 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── Card ── */
+        .terms-card {
+            width: 100%;
+            max-width: 560px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+            color: white;
+            text-align: center;
+            padding: 34px 28px;
+        }
+        .card-header h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .card-header p {
+            color: rgba(255,255,255,0.75);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .card-body { padding: 32px 32px 36px; }
+
+        /* ── Rules ── */
+        .rules-list { list-style: none; margin-bottom: 28px; }
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 13px 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background: #f8fafd;
+            border: 1px solid transparent;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .rule-item:hover { background: #eef4ff; border-color: rgba(95,151,230,0.22); }
+        .rule-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .rule-text {
+            font-size: 0.94rem;
+            color: var(--text);
+            line-height: 1.55;
+        }
+        .rule-text strong { color: var(--navy); }
+
+        /* ── Divider ── */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 24px 0;
+        }
+
+        /* ── Buttons ── */
+        .btn-agree {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 24px rgba(22, 58, 107, 0.22);
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-agree:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-agree:active { transform: scale(0.98); }
+
+        .btn-cancel {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            background: transparent;
+            color: var(--text-soft);
+            border: 1.5px solid rgba(30,60,113,0.18);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.97rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .btn-cancel:hover { background: #f0f4fb; border-color: rgba(30,60,113,0.3); color: var(--navy); }
+
+        /* ── Footer ── */
+        .footer { background: #0f2040; color: #d5dce9; padding: 80px 0 40px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-bottom: 36px; }
+        .footer-section h3 { font-size: 1.05rem; margin-bottom: 16px; color: #fff; }
+        .footer-section p, .footer-section li { font-size: 0.93rem; color: #c8d3e1; line-height: 1.8; }
+        .footer-section ul { list-style: none; padding: 0; margin: 0; }
+        .footer-section li { margin-bottom: 10px; }
+        .footer-section a { color: #c8d3e1; transition: color 0.2s; }
+        .footer-section a:hover { color: #fff; }
+        .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 22px; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+
+        @media (max-width: 560px) {
+            .card-body { padding: 24px 18px 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar">
+    <div class="container">
+        <a class="logo" href="{% url 'home' %}">🏛️ MCC Grievance Portal</a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'faqs' %}">FAQs</a>
+            <a href="{% url 'officers_directory' %}">Officers</a>
+            <a href="{% url 'track_complaint' %}">Track Complaint</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Card ── -->
+<div class="page-shell">
+    <div class="terms-card">
+        <div class="card-header">
+            <h4>📋 Before You File a Complaint</h4>
+            <p>Please read and agree to the following rules</p>
+        </div>
+        <div class="card-body">
+
+            <ul class="rules-list">
+                <li class="rule-item">
+                    <span class="rule-icon">📍</span>
+                    <span class="rule-text">Complaint must be from <strong>Mangalore</strong> city only.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-icon">🏙️</span>
+                    <span class="rule-text">Only civic issues are allowed — sanitation, roads, water, drainage, lights, parks.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-icon">🚫</span>
+                    <span class="rule-text">Personal disputes and non-civic issues are not accepted.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-icon">⚠️</span>
+                    <span class="rule-text">False complaints may be rejected by the department officer.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-icon">📎</span>
+                    <span class="rule-text">A photo or document attachment is <strong>mandatory</strong> when filing a complaint.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-icon">🔒</span>
+                    <span class="rule-text">Once submitted, complaints <strong>cannot</strong> be edited or deleted.</span>
+                </li>
+            </ul>
+
+            <div class="divider"></div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-agree">✅ I Agree — Continue to File Complaint</button>
+            </form>
+
+            <a href="{% url 'dashboard' %}" class="btn-cancel">Cancel</a>
+
+        </div>
+    </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About MCC Portal</h3>
+                <p>Empowering citizens of Mangalore to report civic issues, track progress, and stay connected with municipal services through a simple and secure portal.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'track_complaint' %}">Track Complaint</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                    <li><a href="{% url 'officers_directory' %}">Officers Directory</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📍 Mangalore City Corporation</li>
+                    <li>📞 +91 824-2220301</li>
+                    <li>📧 support@mccportal.in</li>
+                    <li>🕒 Mon-Fri: 10:00 AM – 5:30 PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Mangalore City Corporation. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html> 

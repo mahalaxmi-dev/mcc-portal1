@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FAQs - MCC Grievance Portal</title>
+    <style>
+        :root {
+            --navy: #163a6b;
+            --navy-dark: #122f5a;
+            --sky: #5f97e6;
+            --sky-soft: #dce9fb;
+            --white: #ffffff;
+            --gray: #5a6270;
+            --text: #1f3250;
+            --text-soft: #52617a;
+            --border: rgba(28, 56, 108, 0.12);
+            --shadow: 0 18px 45px rgba(21, 56, 102, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, #f5f8ff 0%, #ffffff 45%, #f8fbff 100%);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .navbar {
+            background: rgba(24, 50, 92, 0.96);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 20px 45px rgba(15, 38, 71, 0.12);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .navbar .logo {
+            color: #f8fbff;
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #d7e4ff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        .faq-section {
+            padding: 80px 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 3vw, 3.4rem);
+            color: var(--navy);
+            margin-bottom: 14px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            color: var(--text-soft);
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        #search-box {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 16px;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+            font-family: inherit;
+        }
+
+        #search-box:focus {
+            outline: none;
+            border-color: var(--sky);
+            box-shadow: 0 18px 45px rgba(95, 151, 230, 0.2);
+        }
+
+        #search-box::placeholder {
+            color: var(--text-soft);
+        }
+
+        .faq-list {
+            display: grid;
+            gap: 18px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 50px rgba(21, 56, 102, 0.15);
+        }
+
+        .faq-question {
+            padding: 24px 28px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--navy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            transition: background-color 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background-color: rgba(95, 151, 230, 0.05);
+        }
+
+        .faq-question-text {
+            flex: 1;
+        }
+
+        .arrow {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(95, 151, 230, 0.12);
+            color: var(--sky);
+            font-size: 18px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .arrow.open {
+            transform: rotate(180deg);
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 28px 28px;
+            color: var(--text-soft);
+            line-height: 1.8;
+            font-size: 0.98rem;
+            border-top: 1px solid rgba(28, 56, 108, 0.08);
+        }
+
+        .faq-answer.open {
+            display: block;
+            padding-top: 20px;
+        }
+
+        .no-results {
+            color: var(--text-soft);
+            display: none;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1rem;
+            background: var(--white);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .footer {
+            background: #0f2040;
+            color: #d5dce9;
+            padding-top: 80px;
+            padding-bottom: 40px;
+        }
+
+        .footer .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            margin-bottom: 36px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 18px;
+            color: #ffffff;
+        }
+
+        .footer-section p,
+        .footer-section li {
+            font-size: 0.95rem;
+            color: #c8d3e1;
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: #c8d3e1;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 24px;
+            font-size: 0.92rem;
+            color: rgba(255,255,255,0.78);
+        }
+
+        @media (max-width: 780px) {
+            .navbar .container {
+                padding: 0 16px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .faq-section {
+                padding: 50px 0;
+            }
+
+            .faq-question {
+                padding: 20px 24px;
+                font-size: 1rem;
+            }
+
+            .faq-answer {
+                padding: 0 24px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="logo" href="{% url 'home' %}">🏛️ MCC Grievance Portal</a>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'faqs' %}">FAQs</a>
+        <a href="{% url 'officers_directory' %}">Officers</a>
+        <a href="{% url 'track_complaint' %}">Track Complaint</a>
+        {% if request.session.citizen_id %}
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<section class="faq-section">
+    <div class="container">
+        <div class="page-header">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about filing complaints, tracking status, and using the MCC Grievance Portal.</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="search-box" placeholder="🔍 Search your question here...">
+        </div>
+
+        <div class="faq-list" id="faq-list">
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">Who can file a complaint?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">Any citizen of Mangalore can register and file a complaint through this portal. You must have a registered account to file complaints.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">What kind of complaints can I file?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">Only civic issues related to Mangalore are allowed — such as sanitation, roads, water supply, drainage, street lights, and parks. Personal disputes are not allowed.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">How do I track my complaint?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">You can track your complaint using the Complaint ID provided after submission. Use the Track Complaint page on the home screen — no login required.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">How long does it take to resolve a complaint?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">Resolution time depends on the nature of the complaint and the department. You can check the status anytime through your dashboard or the track complaint page.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">Can I file a complaint without registering?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">No. You must register and login to file a complaint. However, tracking a complaint by ID is available to everyone without login.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">What happens if I file a false complaint?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">False complaints may be rejected by the department officer. Please ensure your complaint is genuine and related to a civic issue in Mangalore.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">Can I file complaints via email?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">No. Complaints sent through email will not be officially registered. Please use this grievance portal to file complaints.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">Can I edit or delete a complaint after filing?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">No. Once a complaint is submitted it cannot be edited or deleted. Please review your complaint carefully before submitting.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">What is the attachment requirement?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">Attaching a photo or document as evidence is mandatory when filing a complaint. This helps the department officer understand and verify the issue faster.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">I forgot my username or password. What do I do?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">On the login page, click "Forgot Username?" to recover your username using your registered email. Click "Forgot Password?" to reset your password using your username and registered email.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">Can I file multiple complaints?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">Yes. You can file as many complaints as needed. Each complaint will get a unique Complaint ID and can be tracked separately from your dashboard.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-question-text">Who handles my complaint after I file it?</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="faq-answer">Your complaint is automatically routed to the department you selected. The department officer will review it and update the status to In Progress or Resolved.</div>
+    </div>
+
+</div>
+
+<p class="no-results" id="no-results">No questions found matching your search.</p>
+
+</div>
+</section>
+
+<footer class="footer">
+    <div class="container footer-content">
+        <div class="footer-section">
+            <h3>About MCC Portal</h3>
+            <p>Empowering citizens of Mangalore to report civic issues, track progress, and stay connected with municipal services through a simple and secure portal.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'track_complaint' %}">Track Complaint</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                <li><a href="{% url 'officers_directory' %}">Officers Directory</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Contact</h3>
+            <ul>
+                <li>📍 Mangalore City Corporation</li>
+                <li>📞 +91 824-2220301</li>
+                <li>📧 support@mccportal.in</li>
+                <li>🕒 Mon-Fri: 10:00 AM - 5:30 PM</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container footer-bottom">
+        <p>© 2026 Mangalore City Corporation. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    function toggle(element) {
+        var answer = element.nextElementSibling;
+        var arrow = element.querySelector('.arrow');
+        answer.classList.toggle('open');
+        arrow.classList.toggle('open');
+    }
+
+    document.getElementById('search-box').addEventListener('input', function() {
+        var query = this.value.toLowerCase();
+        var items = document.querySelectorAll('.faq-item');
+        var anyVisible = false;
+        items.forEach(function(item) {
+            var question = item.querySelector('.faq-question-text').innerText.toLowerCase();
+            var answer = item.querySelector('.faq-answer').innerText.toLowerCase();
+            if (question.includes(query) || answer.includes(query)) {
+                item.style.display = 'block';
+                anyVisible = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+    });
+</script>
+
+</body>
+</html>

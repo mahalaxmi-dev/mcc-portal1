@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File a Complaint — Mangalore City</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        :root {
+            --navy:   #0f2542;
+            --navy2:  #1a3c6e;
+            --gold:   #c9972b;
+            --gold-lt:#f0c96a;
+            --cream:  #faf8f4;
+            --white:  #ffffff;
+            --gray:   #6b7280;
+            --gray-lt:#f1f3f6;
+            --red:    #c0392b;
+            --green:  #1a7a4a;
+            --border: #dde3ed;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(15,37,66,.10);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            min-height: 100vh;
+            color: var(--navy);
+        }
+
+        /* ── Background pattern ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 10% -10%, rgba(201,151,43,.10) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 95% 110%, rgba(15,37,66,.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Header banner ── */
+        .site-header {
+            background: var(--navy);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+        .site-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-lt), var(--gold));
+        }
+        .header-logo {
+            width: 38px; height: 38px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .header-title {
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            letter-spacing: .3px;
+        }
+        .header-title span {
+            color: var(--gold-lt);
+        }
+        .header-badge {
+            margin-left: auto;
+            background: rgba(255,255,255,.10);
+            border: 1px solid rgba(255,255,255,.18);
+            color: #d4dff0;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 99px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        /* ── Page layout ── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 780px;
+            margin: 48px auto 80px;
+            padding: 0 20px;
+        }
+
+        /* ── Page heading ── */
+        .page-heading {
+            margin-bottom: 36px;
+        }
+        .page-heading .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .page-heading .eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 24px; height: 2px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+        .page-heading h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--navy);
+            letter-spacing: -.5px;
+        }
+        .page-heading p {
+            margin-top: 10px;
+            font-size: 15px;
+            color: var(--gray);
+            font-weight: 300;
+            max-width: 520px;
+            line-height: 1.6;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* ── Section inside card ── */
+        .card-section {
+            padding: 32px 36px;
+            border-bottom: 1px solid var(--border);
+            animation: fadeUp .5s ease both;
+        }
+        .card-section:last-child { border-bottom: none; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .card-section:nth-child(1) { animation-delay: .05s; }
+        .card-section:nth-child(2) { animation-delay: .10s; }
+        .card-section:nth-child(3) { animation-delay: .15s; }
+        .card-section:nth-child(4) { animation-delay: .20s; }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--border), transparent);
+        }
+
+        /* ── Grid ── */
+        .form-grid { display: grid; gap: 20px; }
+        .form-grid.two { grid-template-columns: 1fr 1fr; }
+        @media (max-width: 560px) { .form-grid.two { grid-template-columns: 1fr; } }
+        .span-2 { grid-column: 1 / -1; }
+
+        /* ── Field ── */
+        .field { display: flex; flex-direction: column; gap: 7px; }
+        .field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+            letter-spacing: .2px;
+        }
+        .field label .opt {
+            font-weight: 400;
+            color: var(--gray);
+            margin-left: 4px;
+            font-size: 12px;
+        }
+        .field label .req { color: var(--gold); margin-left: 2px; }
+
+        /* inputs */
+        .field input[type=text],
+        .field input[type=email],
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 11px 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: var(--navy);
+            background: var(--gray-lt);
+            border: 1.5px solid transparent;
+            border-radius: var(--radius);
+            outline: none;
+            transition: border-color .2s, background .2s, box-shadow .2s;
+            -webkit-appearance: none;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            background: var(--white);
+            border-color: var(--navy2);
+            box-shadow: 0 0 0 3px rgba(26,60,110,.10);
+        }
+        .field input[readonly] {
+            background: #eef0f4;
+            color: var(--gray);
+            cursor: not-allowed;
+        }
+        .field select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+        .field textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+        .city-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #eef0f4;
+            border: 1.5px solid transparent;
+            border-radius: var(--radius);
+            padding: 11px 14px;
+        }
+        .city-row .pin-icon { font-size: 16px; }
+        .city-row span { font-size: 14px; font-weight: 500; color: var(--gray); }
+
+        /* char count */
+        .char-count {
+            font-size: 12px;
+            color: var(--gray);
+            text-align: right;
+            margin-top: -6px;
+        }
+
+        /* ── Map section ── */
+        .map-search-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .map-search-row input {
+            flex: 1;
+            padding: 11px 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            background: var(--gray-lt);
+            border: 1.5px solid transparent;
+            border-radius: var(--radius);
+            outline: none;
+            transition: border-color .2s, background .2s, box-shadow .2s;
+        }
+        .map-search-row input:focus {
+            background: var(--white);
+            border-color: var(--navy2);
+            box-shadow: 0 0 0 3px rgba(26,60,110,.10);
+        }
+        .btn-search, .btn-reset {
+            padding: 11px 20px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background .2s, transform .1s;
+            white-space: nowrap;
+        }
+        .btn-search {
+            background: var(--navy);
+            color: var(--white);
+        }
+        .btn-search:hover { background: var(--navy2); }
+        .btn-reset {
+            background: #fee2e2;
+            color: var(--red);
+            display: none;
+        }
+        .btn-reset:hover { background: #fecaca; }
+
+        #search-error { font-size: 13px; color: var(--red); margin-bottom: 8px; min-height: 18px; }
+
+        #map {
+            width: 100%;
+            height: 340px;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+        }
+        #map-warning {
+            display: none;
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--red);
+            background: #fff1f0;
+            border: 1px solid #fecaca;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        #map-coords {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--green);
+            font-weight: 500;
+            min-height: 18px;
+        }
+
+        /* ── File upload ── */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color .2s, background .2s;
+            position: relative;
+        }
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--navy2);
+            background: #f0f4fb;
+        }
+        .upload-zone input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .upload-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--navy);
+        }
+        .upload-sub {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+        #file-name-display {
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--green);
+            font-weight: 500;
+        }
+
+        /* ── Submit area ── */
+        .submit-area {
+            padding: 28px 36px 36px;
+        }
+        .submit-note {
+            font-size: 12.5px;
+            color: var(--gray);
+            line-height: 1.5;
+            margin-bottom: 18px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .submit-note .icon { flex-shrink: 0; font-size: 15px; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: .3px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform .15s, box-shadow .15s;
+            box-shadow: 0 6px 20px rgba(15,37,66,.25);
+        }
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(201,151,43,.20) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity .2s;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,37,66,.30); }
+        .btn-submit:hover::before { opacity: 1; }
+        .btn-submit:active { transform: translateY(0); }
+
+        /* ── Error banner ── */
+        .error-banner {
+            background: #fff1f0;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--red);
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* ── Confirm overlay ── */
+        #confirm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,37,66,.55);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #confirm-overlay.show { display: flex; }
+
+        #confirm-box {
+            background: var(--white);
+            padding: 44px 40px 36px;
+            border-radius: 24px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(15,37,66,.30);
+            animation: popIn .25s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(.88); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .confirm-icon {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, #e8f0fe, #d0e2ff);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+        #confirm-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+        #confirm-box p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+        .confirm-btns { display: flex; gap: 12px; }
+        .btn-confirm {
+            flex: 1;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--navy), var(--navy2));
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s;
+            box-shadow: 0 4px 14px rgba(15,37,66,.22);
+        }
+        .btn-confirm:hover { transform: translateY(-1px); box-shadow: 0 7px 18px rgba(15,37,66,.28); }
+        .btn-cancel-modal {
+            flex: 1;
+            padding: 13px;
+            background: var(--gray-lt);
+            color: var(--navy);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .btn-cancel-modal:hover { background: #e4e8f0; }
+
+        /* ── Progress steps ── */
+        .steps-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 32px;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray);
+        }
+        .step-num {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--gray-lt);
+            border: 1.5px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gray);
+            flex-shrink: 0;
+        }
+        .step.active .step-num {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+        .step.active { color: var(--navy); }
+        .step-line {
+            flex: 1;
+            height: 1.5px;
+            background: var(--border);
+            margin: 0 10px;
+        }
+
+        /* ── Department chips ── */
+        .dept-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .dept-chip {
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all .15s;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .dept-chip:hover {
+            border-color: var(--navy2);
+            color: var(--navy);
+            background: #f0f4fb;
+        }
+        .dept-chip.selected {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+        .dept-chip .chip-icon { margin-right: 5px; }
+
+        /* hidden select for form submission */
+        #dept-select { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+    <div class="header-logo">🏛️</div>
+    <div class="header-title">MCC GRIEVANCE PORTAL</div>
+    <div class="header-badge">Complaint Portal</div>
+</header>
+
+<div class="page-wrap">
+
+    <!-- Page heading -->
+    <div class="page-heading">
+        <div class="eyebrow">Citizen Services</div>
+        <h1>File a Complaint</h1>
+        <p>Report civic issues to the right department. We'll review your complaint and take action within 3–5 working days.</p>
+    </div>
+
+    <!-- Steps bar -->
+    <div class="steps-bar">
+        <div class="step active"><div class="step-num">1</div> Issue Details</div>
+        <div class="step-line"></div>
+        <div class="step active"><div class="step-num">2</div> Location</div>
+        <div class="step-line"></div>
+        <div class="step active"><div class="step-num">3</div> Evidence</div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-num">4</div> Review</div>
+    </div>
+
+    <!-- Error banner (shown conditionally) -->
+    <!-- <div class="error-banner">⚠️ There was an error submitting your complaint. Please try again.</div> -->
+
+    <div class="card">
+
+        <form method="POST" enctype="multipart/form-data" id="complaint-form">
+            {% csrf_token %} 
+
+            <!-- ── Section 1: Department & Basic Info ── -->
+            <div class="card-section">
+                <div class="section-label">Department & Issue</div>
+
+                <div class="form-grid">
+                    <div class="field span-2">
+                        <label>Select Department <span class="req">*</span></label>
+                        <div class="dept-chips">
+                            <div class="dept-chip" data-value="Sanitation"><span class="chip-icon">🗑️</span>Sanitation</div>
+                            <div class="dept-chip" data-value="Roads & Infrastructure"><span class="chip-icon">🛣️</span>Roads & Infrastructure</div>
+                            <div class="dept-chip" data-value="Water Supply"><span class="chip-icon">💧</span>Water Supply</div>
+                            <div class="dept-chip" data-value="Drainage"><span class="chip-icon">🌊</span>Drainage</div>
+                            <div class="dept-chip" data-value="Street Lights"><span class="chip-icon">💡</span>Street Lights</div>
+                            <div class="dept-chip" data-value="Parks & Public Spaces"><span class="chip-icon">🌳</span>Parks & Public Spaces</div>
+                        </div>
+                        <select name="department" id="dept-select" required>
+                            <option value="">-- Select --</option>
+                            <option value="Sanitation">Sanitation</option>
+                            <option value="Roads & Infrastructure">Roads & Infrastructure</option>
+                            <option value="Water Supply">Water Supply</option>
+                            <option value="Drainage">Drainage</option>
+                            <option value="Street Lights">Street Lights</option>
+                            <option value="Parks & Public Spaces">Parks & Public Spaces</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>City</label>
+                        <div class="city-row">
+                            <span class="pin-icon">📍</span>
+                            <span>Mangalore, Karnataka</span>
+                        </div>
+                        <input type="hidden" name="city" value="Mangalore">
+                    </div>
+
+                    <div class="field">
+                        <label>Complaint Title <span class="req">*</span></label>
+                        <input type="text" name="title" placeholder="e.g. Overflowing drain near bus stand" required>
+                    </div>
+
+                    <div class="field span-2">
+                        <label>Street Address / Landmark <span class="req">*</span></label>
+                        <input type="text" name="address" placeholder="e.g. Near State Bank, Hampankatta" required>
+                    </div>
+
+                    <div class="field span-2">
+                        <label>Description <span class="req">*</span></label>
+                        <textarea name="description" id="description" maxlength="500"
+                            placeholder="Describe the issue in detail — when did it start, how severe is it, who is affected…" required></textarea>
+                        <div class="char-count" id="char-count">0 / 500</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Section 2: Map Location ── -->
+            <div class="card-section">
+                <div class="section-label">Map Location <span style="font-size:11px;font-weight:400;color:var(--gray);text-transform:none;letter-spacing:0">(optional)</span></div>
+
+                <div class="map-search-row">
+                    <input type="text" id="search-box" placeholder="Search a place in Mangalore…">
+                    <button type="button" class="btn-search" id="search-btn">🔍 Search</button>
+                    <button type="button" class="btn-reset" id="reset-btn" onclick="resetLocation()">✕ Reset</button>
+                </div>
+
+                <p id="search-error"></p>
+                <div id="map"></div>
+                <p id="map-warning">⚠️ Please select a location within Mangalore city limits.</p>
+                <p id="map-coords"></p>
+                <input type="hidden" name="map_location" id="map_location">
+            </div>
+
+            <!-- ── Section 3: Attachment ── -->
+            <div class="card-section">
+                <div class="section-label">Photographic Evidence</div>
+                <div class="field">
+                    <label>Attach Photo <span class="req">*</span> <span class="opt">(JPG or PNG, max 3 MB)</span></label>
+                    <div class="upload-zone" id="upload-zone">
+                        <input type="file" name="attachment" id="file-input" accept="image/png,image/jpeg" required>
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-text">Click to upload or drag & drop</div>
+                        <div class="upload-sub">JPG or PNG · Maximum 3 MB</div>
+                        <div id="file-name-display"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Submit ── -->
+            <div class="submit-area">
+                <div class="submit-note">
+                    <span class="icon">🔒</span>
+                    <span>Your complaint is submitted securely. Once submitted, it cannot be edited or deleted. You will receive a complaint reference number for tracking.</span>
+                </div>
+                <button type="button" class="btn-submit" onclick="showConfirm()">
+                    Submit Complaint →
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- Confirm overlay -->
+<div id="confirm-overlay">
+    <div id="confirm-box">
+        <div class="confirm-icon">📋</div>
+        <h3>Confirm Submission</h3>
+        <p>Are you sure you want to submit this complaint? Once submitted, it cannot be edited or deleted. Your complaint will be reviewed within 3–5 working days.</p>
+        <div class="confirm-btns">
+            <button class="btn-confirm" onclick="submitForm()">Yes, Submit</button>
+            <button class="btn-cancel-modal" onclick="hideConfirm()">Go Back</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* ── Department chips ── */
+    const chips = document.querySelectorAll('.dept-chip');
+    const deptSelect = document.getElementById('dept-select');
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('selected'));
+            chip.classList.add('selected');
+            deptSelect.value = chip.dataset.value;
+        });
+    });
+
+    /* ── Char count ── */
+    document.getElementById('description').addEventListener('input', function () {
+        document.getElementById('char-count').textContent = this.value.length + ' / 500';
+    });
+
+    /* ── File upload display ── */
+    document.getElementById('file-input').addEventListener('change', function () {
+        const name = this.files[0] ? this.files[0].name : '';
+        document.getElementById('file-name-display').textContent = name ? '✅ ' + name : '';
+    });
+
+    const uploadZone = document.getElementById('upload-zone');
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+    uploadZone.addEventListener('drop', e => {
+        e.preventDefault();
+        uploadZone.classList.remove('drag-over');
+        const dt = e.dataTransfer;
+        if (dt.files.length) {
+            document.getElementById('file-input').files = dt.files;
+            document.getElementById('file-name-display').textContent = '✅ ' + dt.files[0].name;
+        }
+    });
+
+    /* ── Map ── */
+    var mangaloreLat = 12.9141, mangaloreLng = 74.8560;
+    var bounds = { minLat: 12.85, maxLat: 12.97, minLng: 74.80, maxLng: 74.92 };
+
+    var map = L.map('map').setView([mangaloreLat, mangaloreLng], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker = null;
+
+    function isInside(lat, lng) {
+        return lat >= bounds.minLat && lat <= bounds.maxLat && lng >= bounds.minLng && lng <= bounds.maxLng;
+    }
+
+    function placeMarker(lat, lng) {
+        if (!isInside(lat, lng)) {
+            document.getElementById('map-warning').style.display = 'block';
+            document.getElementById('map-coords').innerText = '';
+            document.getElementById('map_location').value = '';
+            document.getElementById('reset-btn').style.display = 'none';
+            if (marker) { map.removeLayer(marker); marker = null; }
+            return;
+        }
+        document.getElementById('map-warning').style.display = 'none';
+        if (marker) map.removeLayer(marker);
+        marker = L.marker([lat, lng]).addTo(map);
+        map.setView([lat, lng], 15);
+        document.getElementById('reset-btn').style.display = 'inline-flex';
+
+        fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
+            .then(r => r.json())
+            .then(data => {
+                var parts = data.address || {};
+                var friendly = [parts.road, parts.suburb, parts.city_district, parts.city].filter(Boolean).join(', ')
+                    || data.display_name
+                    || (lat.toFixed(5) + ', ' + lng.toFixed(5));
+                var coords = lat.toFixed(5) + ', ' + lng.toFixed(5);
+                document.getElementById('map_location').value = friendly + ' (' + coords + ')';
+                document.getElementById('map-coords').innerText = '📍 ' + friendly + ' (' + coords + ')';
+            })
+            .catch(() => {
+                var coords = lat.toFixed(5) + ', ' + lng.toFixed(5);
+                document.getElementById('map_location').value = coords;
+                document.getElementById('map-coords').innerText = '📍 ' + coords;
+            });
+    }
+
+    function resetLocation() {
+        if (marker) { map.removeLayer(marker); marker = null; }
+        document.getElementById('map_location').value = '';
+        document.getElementById('map-coords').innerText = '';
+        document.getElementById('map-warning').style.display = 'none';
+        document.getElementById('reset-btn').style.display = 'none';
+        document.getElementById('search-box').value = '';
+        map.setView([mangaloreLat, mangaloreLng], 13);
+    }
+
+    map.on('click', e => placeMarker(e.latlng.lat, e.latlng.lng));
+
+    document.getElementById('search-btn').addEventListener('click', function () {
+        var q = document.getElementById('search-box').value.trim();
+        if (!q) return;
+        document.getElementById('search-error').innerText = '';
+        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q + ', Mangalore, Karnataka, India'))
+            .then(r => r.json())
+            .then(data => {
+                if (!data.length) { document.getElementById('search-error').innerText = 'Place not found. Try a different name.'; return; }
+                placeMarker(parseFloat(data[0].lat), parseFloat(data[0].lon));
+            })
+            .catch(() => { document.getElementById('search-error').innerText = 'Search failed. Please try again.'; });
+    });
+
+    document.getElementById('search-box').addEventListener('keypress', e => {
+        if (e.key === 'Enter') { e.preventDefault(); document.getElementById('search-btn').click(); }
+    });
+
+    /* ── Confirm modal ── */
+    function showConfirm() {
+        var form = document.getElementById('complaint-form');
+        if (!deptSelect.value) { alert('Please select a department.'); return; }
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        document.getElementById('confirm-overlay').classList.add('show');
+    }
+    function hideConfirm() { document.getElementById('confirm-overlay').classList.remove('show'); }
+    function submitForm() { document.getElementById('complaint-form').submit(); }
+</script>
+</body>
+</html>
+

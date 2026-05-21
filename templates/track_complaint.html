@@ -1,0 +1,709 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Track Complaint - MCC Grievance Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #edf3fb;
+            --panel: #ffffff;
+            --primary: #1e3c71;
+            --primary-dark: #122a4a;
+            --accent: #4a90e2;
+            --text: #192a4f;
+            --subtext: #5e6d89;
+            --border: rgba(30, 60, 113, 0.12);
+            --shadow: 0 32px 68px rgba(14, 31, 70, 0.12);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, rgba(255,255,255,0.95), rgba(237,243,251,0.95) 45%, var(--bg) 100%);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text);
+        }
+
+        .page-shell {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+        }
+
+        .card-wrap {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .hero-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-size: 1.35rem;
+            letter-spacing: -0.02em;
+        }
+
+        .card-header p {
+            margin: 12px auto 0;
+            max-width: 580px;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.98rem;
+            line-height: 1.8;
+        }
+
+        .card-body {
+            padding: 30px 28px 36px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0;
+            border: 1px solid rgba(30, 60, 113, 0.18);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.75);
+        }
+
+        .input-group .form-control {
+            border: none;
+            padding: 18px 20px;
+            font-size: 1rem;
+            min-height: 56px;
+        }
+
+        .input-group .form-control:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            border: none;
+            background-color: var(--accent);
+            color: white;
+            font-weight: 700;
+            padding: 0 32px;
+            min-height: 56px;
+            border-radius: 0;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.08);
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: #306fc5;
+            transform: translateY(-1px);
+        }
+
+        .alert {
+            margin-top: 22px;
+            border-radius: 16px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #eef1f8;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--subtext);
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            color: #2f3d5f;
+            text-align: right;
+            max-width: 65%;
+            word-break: break-word;
+        }
+
+        .badge-pending,
+        .badge-inprogress,
+        .badge-resolved {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .badge-pending { background-color: #fff0f0; color: #c0392b; }
+        .badge-inprogress { background-color: #fff8e5; color: #8d6a12; }
+        .badge-resolved { background-color: #e6f7ed; color: #1a7a4e; }
+
+        .home-link {
+            display: inline-block;
+            margin: 26px auto 0;
+            color: var(--subtext);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .home-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .back-button-wrapper {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--accent), #3d7bc5);
+            color: white;
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.98rem;
+            box-shadow: 0 12px 28px rgba(74, 144, 226, 0.24);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(74, 144, 226, 0.32);
+        }
+
+        @media (max-width: 680px) {
+            .page-shell {
+                padding: 36px 16px 60px;
+            }
+
+            .card-header {
+                padding: 28px 20px;
+            }
+
+            .card-body {
+                padding: 24px 20px 30px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .detail-value {
+                width: 100%;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-shell">
+<div class="card-wrap">
+    <div class="hero-card">
+        <div class="card-header">
+            <h4>🔍 Track Your Complaint</h4>
+            <p>Enter your complaint ID to view the latest status, updates, and officer remarks instantly.</p>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+            {% csrf_token %}
+            <label class="form-label" for="complaint_id">Complaint ID</label>
+            <div class="input-group mb-3">
+                <input id="complaint_id" type="number" name="complaint_id" class="form-control" placeholder="Enter your Complaint ID" required>
+                <button type="submit" class="btn btn-primary">Track</button>
+            </div>
+            </form>
+
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            {% if complaint %}
+            <hr>
+            <h6 class="fw-bold mb-3">Complaint Details</h6>
+            <div class="detail-row"><span class="detail-label">Complaint ID</span><span class="detail-value">#{{ complaint.complaint_id }}</span></div>
+            <div class="detail-row"><span class="detail-label">Title</span><span class="detail-value">{{ complaint.title }}</span></div>
+            <div class="detail-row"><span class="detail-label">Department</span><span class="detail-value">{{ complaint.department }}</span></div>
+            <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value">{{ complaint.address }}</span></div>
+            <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-value">
+                    {% if complaint.status == 'Pending' %}<span class="badge-pending">Pending</span>
+                    {% elif complaint.status == 'In Progress' %}<span class="badge-inprogress">In Progress</span>
+                    {% elif complaint.status == 'Resolved' %}<span class="badge-resolved">Resolved</span>
+                    {% endif %}
+                </span>
+            </div>
+            <div class="detail-row"><span class="detail-label">Date Submitted</span><span class="detail-value">{{ complaint.date_submitted|date:"d M Y H:i" }}</span></div>
+            <div class="detail-row"><span class="detail-label">Last Updated</span><span class="detail-value">{{ complaint.last_updated|date:"d M Y H:i" }}</span></div>
+            {% if complaint.officer_remark %}
+            <div class="detail-row"><span class="detail-label">Officer Remark</span><span class="detail-value">{{ complaint.officer_remark }}</span></div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="back-button-wrapper">
+        <a class="back-button" href="{% url 'home' %}">
+            <span>← Back to Home</span>
+        </a>
+    </div>
+</div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Complaint - MCC Grievance Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #163a6b;
+            --navy-dark: #122f5a;
+            --sky: #5f97e6;
+            --sky-soft: #dce9fb;
+            --white: #ffffff;
+            --text: #1f3250;
+            --text-soft: #52617a;
+            --border: rgba(28, 56, 108, 0.12);
+            --shadow: 0 18px 45px rgba(21, 56, 102, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, #f5f8ff 0%, #ffffff 45%, #f8fbff 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ── Navbar (matches home) ── */
+        .navbar {
+            background: rgba(24, 50, 92, 0.96);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 20px 45px rgba(15, 38, 71, 0.12);
+        }
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .navbar .logo {
+            color: #f8fbff;
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 22px;
+        }
+        .nav-links a {
+            color: #d7e4ff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.25s ease;
+        }
+        .nav-links a:hover { color: #ffffff; }
+
+        /* ── Page Shell ── */
+        .page-shell {
+            padding: 72px 24px 100px;
+        }
+
+        /* ── Card ── */
+        .card-wrap {
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        .hero-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: 0 32px 68px rgba(14, 31, 70, 0.11);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+            color: white;
+            text-align: center;
+            padding: 36px 28px;
+        }
+        .card-header h4 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            letter-spacing: -0.01em;
+            margin: 0 0 10px;
+        }
+        .card-header p {
+            margin: 0 auto;
+            max-width: 480px;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.97rem;
+            line-height: 1.7;
+        }
+
+        .card-body {
+            padding: 32px 32px 38px;
+        }
+
+        /* ── Form ── */
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 0;
+            border: 1.5px solid rgba(30, 60, 113, 0.22);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-row:focus-within {
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(95, 151, 230, 0.18);
+        }
+
+        .search-row input[type="number"] {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 16px 20px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: transparent;
+            -moz-appearance: textfield;
+        }
+        .search-row input[type="number"]::-webkit-outer-spin-button,
+        .search-row input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+        .search-row input::placeholder { color: #9aabc2; }
+
+        .search-row button {
+            border: none;
+            background: var(--sky);
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.97rem;
+            padding: 0 28px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            flex-shrink: 0;
+        }
+        .search-row button:hover { background: #4a84d4; }
+        .search-row button:active { transform: scale(0.97); }
+
+        /* ── Alert ── */
+        .alert-danger {
+            margin-top: 20px;
+            background: #fff0f0;
+            border: 1px solid #f5c2c7;
+            color: #842029;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 0.95rem;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            border: none;
+            border-top: 1px solid #eef1f8;
+            margin: 28px 0 24px;
+        }
+
+        .result-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            margin-bottom: 18px;
+        }
+
+        /* ── Detail rows ── */
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 13px 0;
+            border-bottom: 1px solid #eef1f8;
+            gap: 16px;
+        }
+        .detail-row:last-child { border-bottom: none; }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-soft);
+            font-size: 0.92rem;
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+        .detail-value {
+            color: #2f3d5f;
+            text-align: right;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        /* ── Status badges ── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .badge-pending   { background: #fff0f0; color: #c0392b; }
+        .badge-inprogress { background: #fff8e5; color: #8d6a12; }
+        .badge-resolved  { background: #e6f7ed; color: #1a7a4e; }
+
+        /* ── Back button ── */
+        .back-button-wrapper { text-align: center; margin-top: 32px; }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, var(--sky), #3d7bc5);
+            color: white;
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.97rem;
+            box-shadow: 0 12px 28px rgba(74, 144, 226, 0.22);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(74, 144, 226, 0.32);
+            color: white;
+        }
+
+        /* ── Footer (matches home) ── */
+        .footer {
+            background: #0f2040;
+            color: #d5dce9;
+            padding: 80px 0 40px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            margin-bottom: 36px;
+        }
+        .footer-section h3 { font-size: 1.05rem; margin-bottom: 16px; color: #fff; }
+        .footer-section p, .footer-section li { font-size: 0.93rem; color: #c8d3e1; line-height: 1.8; }
+        .footer-section ul { list-style: none; padding: 0; margin: 0; }
+        .footer-section li { margin-bottom: 10px; }
+        .footer-section a { color: #c8d3e1; text-decoration: none; transition: color 0.2s; }
+        .footer-section a:hover { color: #fff; }
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 22px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        @media (max-width: 600px) {
+            .card-body { padding: 24px 20px 30px; }
+            .detail-row { flex-direction: column; gap: 4px; }
+            .detail-value { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <a class="logo" href="{% url 'home' %}">🏛️ MCC Grievance Portal</a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'faqs' %}">FAQs</a>
+            <a href="{% url 'officers_directory' %}">Officers</a>
+            <a href="{% url 'track_complaint' %}">Track Complaint</a>
+            {% if request.session.citizen_id %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="page-shell">
+    <div class="card-wrap">
+        <div class="hero-card">
+            <div class="card-header">
+                <h4>🔍 Track Your Complaint</h4>
+                <p>Enter your complaint ID to view the latest status, updates, and officer remarks instantly.</p>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <label class="form-label" for="complaint_id">Complaint ID</label>
+                    <div class="search-row">
+                        <input
+                            id="complaint_id"
+                            type="number"
+                            name="complaint_id"
+                            placeholder="e.g. 1042"
+                            required
+                            autocomplete="off"
+                        >
+                        <button type="submit">Track →</button>
+                    </div>
+                </form>
+
+                {% if error %}
+                <div class="alert-danger">{{ error }}</div>
+                {% endif %}
+
+                {% if complaint %}
+                <hr class="divider">
+                <div class="result-title">Complaint Details</div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Complaint ID</span>
+                    <span class="detail-value">#{{ complaint.complaint_id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Title</span>
+                    <span class="detail-value">{{ complaint.title }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Department</span>
+                    <span class="detail-value">{{ complaint.department }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Address</span>
+                    <span class="detail-value">{{ complaint.address }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status</span>
+                    <span class="detail-value">
+                        {% if complaint.status == 'Pending' %}
+                            <span class="badge badge-pending">⏳ Pending</span>
+                        {% elif complaint.status == 'In Progress' %}
+                            <span class="badge badge-inprogress">🔄 In Progress</span>
+                        {% elif complaint.status == 'Resolved' %}
+                            <span class="badge badge-resolved">✅ Resolved</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date Submitted</span>
+                    <span class="detail-value">{{ complaint.date_submitted|date:"d M Y H:i" }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Last Updated</span>
+                    <span class="detail-value">{{ complaint.last_updated|date:"d M Y H:i" }}</span>
+                </div>
+                {% if complaint.officer_remark %}
+                <div class="detail-row">
+                    <span class="detail-label">Officer Remark</span>
+                    <span class="detail-value">{{ complaint.officer_remark }}</span>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="back-button-wrapper">
+            <a class="back-button" href="{% url 'home' %}">← Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About MCC Portal</h3>
+                <p>Empowering citizens of Mangalore to report civic issues, track progress, and stay connected with municipal services through a simple and secure portal.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'track_complaint' %}">Track Complaint</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                    <li><a href="{% url 'officers_directory' %}">Officers Directory</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📍 Mangalore City Corporation</li>
+                    <li>📞 +91 824-2220301</li>
+                    <li>📧 support@mccportal.in</li>
+                    <li>🕒 Mon-Fri: 10:00 AM – 5:30 PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Mangalore City Corporation. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

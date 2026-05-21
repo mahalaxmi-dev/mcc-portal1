@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCC Grievance Portal - Mangaluru City Corporation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a3a6b;
+            --saffron: #f4a11b;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--navy);
+            color: var(--white);
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-size-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .text-size-btn {
+            background: none;
+            border: 1px solid var(--white);
+            color: var(--white);
+            padding: 2px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .text-size-btn:hover {
+            background: var(--white);
+            color: var(--navy);
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled .header-content {
+            padding: 10px 0;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        header.scrolled .logo {
+            width: 40px;
+            height: 40px;
+            font-size: 14px;
+        }
+
+        .logo-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--navy);
+            margin-bottom: 2px;
+        }
+
+        header.scrolled .logo-text h1 {
+            font-size: 20px;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--saffron);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-outline:hover {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background: var(--saffron);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #e8960f;
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--navy);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, #2a4a7b 100%);
+            color: var(--white);
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 50px 50px;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 60px;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .btn-hero {
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 50px;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.8;
+        }
+
+        .trust-badge-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--saffron);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 80px 0;
+            background: var(--light-gray);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: var(--navy);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--text-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--navy), var(--saffron));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: var(--white);
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--navy);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 0;
+            background: var(--light-gray);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--saffron);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--navy);
+        }
+
+        .step p {
+            color: var(--text-light);
+        }
+
+        /* Departments */
+        .departments {
+            padding: 80px 0;
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            background: var(--light-gray);
+        }
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+            align-items: start;
+            margin-bottom: 80px;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--navy);
+            margin-bottom: 25px;
+        }
+
+        .about-text p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .about-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .about-stat {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .about-stat:hover {
+            transform: translateY(-5px);
+        }
+
+        .about-stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--saffron);
+            margin-bottom: 8px;
+        }
+
+        .about-stat-label {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .about-feature-card {
+            background: var(--white);
+            padding: 35px 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .about-feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--navy), var(--saffron));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: var(--white);
+        }
+
+        .about-feature-card h4 {
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 15px;
+        }
+
+        .about-feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .about-process {
+            margin-bottom: 80px;
+        }
+
+        .about-process h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--navy);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .process-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--saffron);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .process-content h4 {
+            font-size: 18px;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .process-content p {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .about-impact {
+            margin-bottom: 80px;
+        }
+
+        .about-impact h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--navy);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .impact-item {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .impact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .impact-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .impact-label {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .about-testimonial {
+            background: var(--white);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            position: relative;
+        }
+
+        .about-testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 80px;
+            color: var(--saffron);
+            opacity: 0.2;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .testimonial-content blockquote {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-content cite {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .department-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .department-header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .department-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--saffron);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .department-info h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .department-info p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .department-content {
+            padding: 20px;
+        }
+
+        .department-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .department-stat {
+            text-align: center;
+        }
+
+        .department-stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--navy);
+        }
+
+        .department-stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--navy);
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--saffron);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                box-shadow: var(--shadow);
+                padding: 20px;
+            }
+
+            nav.active {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .auth-buttons {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .trust-badges {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .stats-grid,
+            .features-grid,
+            .steps,
+            .departments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* About Section Responsive */
+            .about-main {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-stats {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .about-stat {
+                padding: 20px 15px;
+            }
+
+            .about-stat-number {
+                font-size: 28px;
+            }
+
+            .about-text h3 {
+                font-size: 28px;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .process-step {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .impact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-testimonial {
+                padding: 30px 20px;
+            }
+
+            .about-testimonial::before {
+                font-size: 60px;
+                top: 15px;
+                left: 20px;
+            }
+
+            .testimonial-content blockquote {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div>Government of Karnataka | Mangaluru City Corporation</div>
+                <div class="text-size-controls">
+                    <span>Text Size:</span>
+                    <button class="text-size-btn" onclick="changeTextSize('decrease')">A-</button>
+                    <button class="text-size-btn" onclick="changeTextSize('reset')">A</button>
+                    <button class="text-size-btn" onclick="changeTextSize('increase')">A+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">MCC</div>
+                    <div class="logo-text">
+                        <h1>MCC Grievance Portal</h1>
+                        <p>Mangaluru City Corporation</p>
+                    </div>
+                </div>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#departments">Departments</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="#" class="btn btn-outline">Login</a>
+                    <a href="#" class="btn btn-primary">Register</a>
+                </div>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Voice Your Concerns, Build Better Mangaluru</h1>
+                <p>Official Grievance Redressal Portal of Mangaluru City Corporation</p>
+                <div class="hero-buttons">
+                    <a href="#file-complaint" class="btn btn-hero btn-primary">File Complaint</a>
+                    <a href="#track-status" class="btn btn-hero btn-outline">Track Status</a>
+                </div>
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">✓</div>
+                        <span>Government Verified</span>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">🔒</div>
+                        <span>Secure & Confidential</span>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">⚡</div>
+                        <span>Quick Response</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <div class="stat-number" data-target="15420">0</div>
+                    <div class="stat-label">Complaints Filed</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number" data-target="12850">0</div>
+                    <div class="stat-label">Issues Resolved</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number" data-target="3">0</div>
+                    <div class="stat-label">Average Days to Resolve</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-label">Satisfaction Rate %</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Powerful Features for Better Governance</h2>
+                <p>Everything you need to raise and track your concerns effectively</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📝</div>
+                    <h3>File Complaint</h3>
+                    <p>Submit your grievances easily with our intuitive form system. Attach photos and documents for better clarity.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📍</div>
+                    <h3>Pin Location</h3>
+                    <p>Mark the exact location on the map for precise issue identification and faster resolution.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3>Track Status</h3>
+                    <p>Monitor your complaint progress in real-time with detailed status updates and timeline.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🏢</div>
+                    <h3>6 Departments</h3>
+                    <p>Connect with the right department instantly. From water supply to waste management.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">✅</div>
+                    <h3>Get Resolved</h3>
+                    <p>Experience swift action with our streamlined grievance redressal mechanism.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💬</div>
+                    <h3>24/7 Support</h3>
+                    <p>Get assistance anytime with our dedicated helpline and chat support system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>How It Works</h2>
+                <p>Simple 3-step process to get your issues resolved</p>
+            </div>
+            <div class="steps">
+                <div class="step fade-in">
+                    <div class="step-number">1</div>
+                    <h3>File Your Complaint</h3>
+                    <p>Fill out the complaint form with details, upload supporting documents, and pin the location on the map.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">2</div>
+                    <h3>Track Progress</h3>
+                    <p>Receive a unique complaint ID and track your grievance status through the portal or SMS updates.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">3</div>
+                    <h3>Get Resolution</h3>
+                    <p>Department officials take action and you receive notifications when your issue is resolved.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Departments Section -->
+    <section class="departments" id="departments">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Departments</h2>
+                <p>Connect with the right department for your specific needs</p>
+            </div>
+            <div class="departments-grid">
+                <div class="department-card fade-in">
+                    <div class="department-header">
+                        <div class="department-icon">💧</div>
+                        <div class="department-info">
+                            <h3>Water Supply</h3>
+                            <p>Department of Water Resources</p>
+                        </div>
+                    </div>
+                    <div class="department-content">
+                        <div class="department-stats">
+                            <div class="department-stat">
+                                <div class="department-stat-number">2,450</div>
+                                <div class="department-stat-label">Complaints</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">2,180</div>
+                                <div class="department-stat-label">Resolved</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">89%</div>
+                                <div class="department-stat-label">Success Rate</div>
+                            </div>
+                        </div>
+                        <p>Issues related to water supply, pipeline maintenance, water quality, and connection problems.</p>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">File Complaint</button>
+                    </div>
+                </div>
+
+                <div class="department-card fade-in">
+                    <div class="department-header">
+                        <div class="department-icon">🗑️</div>
+                        <div class="department-info">
+                            <h3>Waste Management</h3>
+                            <p>Department of Sanitation</p>
+                        </div>
+                    </div>
+                    <div class="department-content">
+                        <div class="department-stats">
+                            <div class="department-stat">
+                                <div class="department-stat-number">3,200</div>
+                                <div class="department-stat-label">Complaints</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">2,950</div>
+                                <div class="department-stat-label">Resolved</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">92%</div>
+                                <div class="department-stat-label">Success Rate</div>
+                            </div>
+                        </div>
+                        <p>Garbage collection, waste disposal, street cleaning, and sanitation-related issues.</p>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">File Complaint</button>
+                    </div>
+                </div>
+
+                <div class="department-card fade-in">
+                    <div class="department-header">
+                        <div class="department-icon">🚦</div>
+                        <div class="department-info">
+                            <h3>Traffic & Transport</h3>
+                            <p>Department of Traffic</p>
+                        </div>
+                    </div>
+                    <div class="department-content">
+                        <div class="department-stats">
+                            <div class="department-stat">
+                                <div class="department-stat-number">1,890</div>
+                                <div class="department-stat-label">Complaints</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">1,650</div>
+                                <div class="department-stat-label">Resolved</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">87%</div>
+                                <div class="department-stat-label">Success Rate</div>
+                            </div>
+                        </div>
+                        <p>Traffic signals, road maintenance, parking issues, and public transport concerns.</p>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">File Complaint</button>
+                    </div>
+                </div>
+
+                <div class="department-card fade-in">
+                    <div class="department-header">
+                        <div class="department-icon">🏗️</div>
+                        <div class="department-info">
+                            <h3>Building & Planning</h3>
+                            <p>Department of Urban Planning</p>
+                        </div>
+                    </div>
+                    <div class="department-content">
+                        <div class="department-stats">
+                            <div class="department-stat">
+                                <div class="department-stat-number">1,340</div>
+                                <div class="department-stat-label">Complaints</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">1,180</div>
+                                <div class="department-stat-label">Resolved</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">88%</div>
+                                <div class="department-stat-label">Success Rate</div>
+                            </div>
+                        </div>
+                        <p>Building permits, construction violations, zoning issues, and property tax matters.</p>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">File Complaint</button>
+                    </div>
+                </div>
+
+                <div class="department-card fade-in">
+                    <div class="department-header">
+                        <div class="department-icon">🌳</div>
+                        <div class="department-info">
+                            <h3>Parks & Environment</h3>
+                            <p>Department of Environment</p>
+                        </div>
+                    </div>
+                    <div class="department-content">
+                        <div class="department-stats">
+                            <div class="department-stat">
+                                <div class="department-stat-number">980</div>
+                                <div class="department-stat-label">Complaints</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">890</div>
+                                <div class="department-stat-label">Resolved</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">91%</div>
+                                <div class="department-stat-label">Success Rate</div>
+                            </div>
+                        </div>
+                        <p>Park maintenance, tree plantation, environmental pollution, and green spaces.</p>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">File Complaint</button>
+                    </div>
+                </div>
+
+                <div class="department-card fade-in">
+                    <div class="department-header">
+                        <div class="department-icon">💡</div>
+                        <div class="department-info">
+                            <h3>Street Lights</h3>
+                            <p>Department of Electricity</p>
+                        </div>
+                    </div>
+                    <div class="department-content">
+                        <div class="department-stats">
+                            <div class="department-stat">
+                                <div class="department-stat-number">2,100</div>
+                                <div class="department-stat-label">Complaints</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">1,980</div>
+                                <div class="department-stat-label">Resolved</div>
+                            </div>
+                            <div class="department-stat">
+                                <div class="department-stat-number">94%</div>
+                                <div class="department-stat-label">Success Rate</div>
+                            </div>
+                        </div>
+                        <p>Street light maintenance, new installations, power outages, and electrical safety issues.</p>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">File Complaint</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>About MCC Grievance Portal</h2>
+                <p>Empowering Citizens Through Digital Governance</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-main fade-in">
+                    <div class="about-text">
+                        <h3>Transforming Urban Governance</h3>
+                        <p>The Mangaluru City Corporation (MCC) Grievance Portal represents a groundbreaking initiative in civic engagement and digital governance. As the official online platform for citizen grievance redressal, we are committed to fostering transparency, accountability, and efficiency in municipal services delivery.</p>
+                        
+                        <p>Our mission is to bridge the gap between citizens and administration, ensuring that every voice is heard and every concern addressed with the urgency and attention it deserves. Through this digital platform, we are building a more responsive, inclusive, and citizen-centric Mangaluru.</p>
+                    </div>
+                    
+                    <div class="about-stats">
+                        <div class="about-stat">
+                            <div class="about-stat-number">500K+</div>
+                            <div class="about-stat-label">Citizens Served</div>
+                        </div>
+                        <div class="about-stat">
+                            <div class="about-stat-number">24/7</div>
+                            <div class="about-stat-label">Service Availability</div>
+                        </div>
+                        <div class="about-stat">
+                            <div class="about-stat-number">6</div>
+                            <div class="about-stat-label">Departments Integrated</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-features">
+                    <div class="about-feature-card fade-in">
+                        <div class="about-feature-icon">🎯</div>
+                        <h4>Our Vision</h4>
+                        <p>To create a model smart city where technology empowers governance and every citizen has seamless access to municipal services.</p>
+                    </div>
+                    
+                    <div class="about-feature-card fade-in">
+                        <div class="about-feature-icon">🤝</div>
+                        <h4>Our Mission</h4>
+                        <p>Provide transparent, efficient, and accountable grievance redressal mechanisms that enhance citizen satisfaction and trust in governance.</p>
+                    </div>
+                    
+                    <div class="about-feature-card fade-in">
+                        <div class="about-feature-icon">⚖️</div>
+                        <h4>Our Values</h4>
+                        <p>Transparency, Accountability, Efficiency, Inclusivity, and Citizen-Centric Service Delivery guide all our initiatives.</p>
+                    </div>
+                </div>
+
+                <div class="about-process fade-in">
+                    <h3>How We Ensure Excellence</h3>
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="process-icon">📋</div>
+                            <div class="process-content">
+                                <h4>Structured Complaint Management</h4>
+                                <p>Every complaint follows a standardized workflow with clear timelines and accountability metrics.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="process-icon">🔄</div>
+                            <div class="process-content">
+                                <h4>Real-Time Status Tracking</h4>
+                                <p>Citizens receive instant updates through SMS, email, and portal notifications at every stage.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="process-icon">📊</div>
+                            <div class="process-content">
+                                <h4>Data-Driven Decision Making</h4>
+                                <p>Analytics and insights help identify patterns and improve service delivery proactively.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="process-icon">🏆</div>
+                            <div class="process-content">
+                                <h4>Quality Assurance</h4>
+                                <p>Regular audits and feedback mechanisms ensure high standards of service delivery.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-impact fade-in">
+                    <h3>Our Impact on Mangaluru</h3>
+                    <div class="impact-grid">
+                        <div class="impact-item">
+                            <div class="impact-number">98%</div>
+                            <div class="impact-label">Citizen Satisfaction Rate</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-number">72 hrs</div>
+                            <div class="impact-label">Average Resolution Time</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-number">15K+</div>
+                            <div class="impact-label">Monthly Resolutions</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-number">0</div>
+                            <div class="impact-label">Pending Critical Issues</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-testimonial fade-in">
+                    <div class="testimonial-content">
+                        <blockquote>
+                            "The MCC Grievance Portal has revolutionized how we interact with city administration. Issues that took weeks to resolve are now addressed within days. This is digital governance at its best!"
+                        </blockquote>
+                        <cite>- Rajesh Kumar, Resident of Mangaluru</cite>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About MCC</h3>
+                    <p>Mangaluru City Corporation is committed to providing efficient civic services and maintaining the city's infrastructure through transparent governance.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">File Complaint</a></li>
+                        <li><a href="#">Track Status</a></li>
+                        <li><a href="#">Departments</a></li>
+                        <li><a href="#">Citizen Charter</a></li>
+                        <li><a href="#">RTI Act</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">Birth Certificate</a></li>
+                        <li><a href="#">Death Certificate</a></li>
+                        <li><a href="#">Property Tax</a></li>
+                        <li><a href="#">Water Connection</a></li>
+                        <li><a href="#">Trade License</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li>📍 MCC Building, Mangaluru</li>
+                        <li>📞 0824-2220301</li>
+                        <li>📧 commissioner@mangalorecity.gov.in</li>
+                        <li>🕐 Mon-Fri: 10:00 AM - 5:30 PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mangaluru City Corporation. All Rights Reserved. | Government of Karnataka</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky header with shrinking effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav');
+            nav.classList.toggle('active');
+        }
+
+        // Text size adjustment
+        let currentTextSize = 100;
+        function changeTextSize(action) {
+            const body = document.body;
+            if (action === 'increase' && currentTextSize < 120) {
+                currentTextSize += 10;
+            } else if (action === 'decrease' && currentTextSize > 80) {
+                currentTextSize -= 10;
+            } else if (action === 'reset') {
+                currentTextSize = 100;
+            }
+            body.style.fontSize = currentTextSize + '%';
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Start count-up animation for stat numbers
+                    if (entry.target.classList.contains('stat-card')) {
+                        const statNumber = entry.target.querySelector('.stat-number');
+                        if (statNumber && !statNumber.classList.contains('counted')) {
+                            animateCounter(statNumber);
+                            statNumber.classList.add('counted');
+                        }
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+
+        // Count-up animation for stats
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000; // 2 seconds
+            const step = target / (duration / 16); // 60fps
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 16);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('nav').classList.remove('active');
+                }
+            });
+        });
+
+        // Add hover effect to department cards
+        document.querySelectorAll('.department-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Simulate complaint button clicks
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            if (button.textContent.includes('File Complaint')) {
+                button.addEventListener('click', function() {
+                    alert('Complaint form would open here. This is a demo version.');
+                });
+            }
+        });
+
+        // Login/Register button handlers
+        document.querySelector('.btn-outline').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Login portal would open here. This is a demo version.');
+        });
+
+        document.querySelector('.auth-buttons .btn-primary').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Registration form would open here. This is a demo version.');
+        });
+    </script>
+</body>
+</html>
